@@ -1,0 +1,13 @@
+# Config de DESENVOLVIMENTO LOCAL — sem baseUrlPath (localhost:8501 puro).
+# O baseUrlPath="tbrecife" é aplicado SÓ no deploy da VM (ver docker-compose).
+[theme]
+base = "dark"
+
+[server]
+maxUploadSize = 50
+maxMessageSize = 400
+runOnSave = false
+fileWatcherType = "none"
+
+[client]
+showErrorDetails = false
