@@ -362,7 +362,7 @@ def footer() -> None:
     )
 
 
-def hero(titulo: str, subtitulo: str, badges: list[tuple[str, str]], emoji: str = "🫁") -> None:
+def hero(titulo: str, subtitulo: str, badges: list[tuple[str, str]], emoji: str = "🩺") -> None:
     """Renderiza o hero. badges = lista de (texto, classe) onde classe ∈ {'', 'accent', 'success'}."""
     chips = "".join(
         f'<span class="hero-badge {cls}"><span class="dot"></span>{txt}</span>'
