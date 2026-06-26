@@ -111,7 +111,7 @@ def choropleth_bairro() -> folium.Map:
 
     vmax = max(casos.values())
     escala = cm.LinearColormap(
-        ["#0d1117", "#1f4d8a", "#1f6feb", "#58a6ff", "#f0883e", "#da3633"],
+        ["#FFFFCC", "#FED976", "#FEB24C", "#FD8D3C", "#FC4E2A", "#E31A1C", "#B10026"],
         vmin=0, vmax=vmax, caption="Casos de TB (2010–2023)",
     )
 
