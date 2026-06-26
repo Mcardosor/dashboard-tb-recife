@@ -266,3 +266,26 @@ def barras_sazonalidade(df, titulo=None, altura=H_MEDIUM):
     fig.update_xaxes(title=None)
     fig.update_yaxes(title="média/mês", rangemode="tozero")
     return aplicar_layout(fig, altura=altura, titulo=titulo)
+
+
+def barras_bairros(df, titulo="Top 15 Bairros — Casos de TB", altura=580):
+    """Ranking horizontal dos bairros com mais casos."""
+    df = df.sort_values("casos", ascending=True)
+    fig = go.Figure(
+        go.Bar(
+            x=df["casos"], y=df["bairro"].str.title(),
+            orientation="h",
+            marker=dict(
+                color=df["casos"],
+                colorscale=[[0, "#FED976"], [0.5, "#FC4E2A"], [1, "#B10026"]],
+                showscale=False,
+            ),
+            text=df["casos"].astype(int),
+            textposition="outside",
+            cliponaxis=False,
+            hovertemplate="%{y}: %{x:,} casos",
+        )
+    )
+    fig.update_xaxes(title="Casos notificados", rangemode="tozero")
+    fig.update_yaxes(title=None, tickfont=dict(size=11))
+    return aplicar_layout(fig, altura=altura, titulo=titulo)

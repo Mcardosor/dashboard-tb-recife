@@ -63,9 +63,8 @@ def carregar():
 def mapa_html(modo: str) -> str:
     """HTML do mapa Folium (cacheado — renderiza uma vez por modo)."""
     builder = {
+        "Choropleth": mapa.choropleth_bairro,
         "Mapa de calor": mapa.mapa_calor,
-        "Bolhas por bairro": mapa.mapa_bolhas,
-        "Choropleth por bairro": mapa.choropleth_bairro,
     }[modo]
     return builder()._repr_html_()
 
@@ -79,7 +78,7 @@ def _iniciar_warmup():
     def _bg():
         try:
             carregar()
-            mapa_html('Mapa de calor')
+            mapa_html('Choropleth')
         except Exception:
             pass
     threading.Thread(target=_bg, daemon=True).start()
@@ -130,8 +129,8 @@ st.divider()
 
 
 # ── Abas ──────────────────────────────────────────────────────────────────────
-tab_epi, tab_perfil, tab_geo, tab_livre = st.tabs([
-    "📊  Epidemiologia", "👤  Perfil & Clínico", "🗺️  Mapa", "🔬  Análise Livre",
+tab_geo, tab_epi, tab_perfil, tab_livre = st.tabs([
+    "🗺️  Mapa", "📊  Epidemiologia", "👤  Perfil & Clínico", "🔬  Análise Livre",
 ])
 
 
@@ -313,21 +312,27 @@ with tab_perfil:
 
 # ── Mapa ──────────────────────────────────────────────────────────────────────
 with tab_geo:
-    esq, dir = st.columns([1, 3])
-    with esq:
-        st.markdown("##### Nível do mapa")
-        modo = st.radio(
-            "Nível do mapa", label_visibility="collapsed",
-            options=["Mapa de calor", "Bolhas por bairro", "Choropleth por bairro"],
-        )
-        st.caption(
-            "**Mapa de calor:** densidade dos casos geocodificados (lat/lon).  \n"
-            "**Bolhas:** total por bairro, raio proporcional aos casos.  \n"
-            "**Choropleth:** bairros pintados pelo nº de casos (GeoJSON oficial da Prefeitura)."
-        )
+    # ── Controles compactos
+    _b1, _b2, _spacer = st.columns([1, 1, 6])
+    with _b1:
+        if st.button("🗺️ Choropleth", use_container_width=True,
+                     type="primary" if st.session_state.get("_modo_mapa", "Choropleth") == "Choropleth" else "secondary"):
+            st.session_state["_modo_mapa"] = "Choropleth"
+    with _b2:
+        if st.button("🔥 Mapa de calor", use_container_width=True,
+                     type="primary" if st.session_state.get("_modo_mapa") == "Mapa de calor" else "secondary"):
+            st.session_state["_modo_mapa"] = "Mapa de calor"
+    _modo_ativo = st.session_state.get("_modo_mapa", "Choropleth")
+
+    # ── Layout 2 colunas: mapa | ranking
+    col_map, col_rank = st.columns([3, 2])
+    with col_map:
+        components.html(mapa_html(_modo_ativo), height=580)
         st.caption("Fonte: SINAN-TB geocodificado · 2010–2023 · contornos: Prefeitura do Recife.")
-    with dir:
-        components.html(mapa_html(modo), height=620)
+    with col_rank:
+        df_rank = mapa.por_bairro().head(15)
+        fig_rank = graficos.barras_bairros(df_rank)
+        st.plotly_chart(fig_rank, use_container_width=True, config=PLOTLY_CFG)
 
 
 # ── Análise Livre (PyGWalker) ─────────────────────────────────────────────────

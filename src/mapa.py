@@ -72,7 +72,7 @@ def mapa_calor() -> folium.Map:
     m = _base()
     dados = pontos()[["latitude", "longitude"]].values.tolist()
     HeatMap(dados, radius=11, blur=15, min_opacity=0.25,
-            gradient={0.2: "#1f6feb", 0.45: "#2ea043", 0.7: "#d29922", 1.0: "#da3633"}).add_to(m)
+            gradient={0.2: "#ffffb2", 0.45: "#fd8d3c", 0.7: "#e31a1c", 1.0: "#7f0000"}).add_to(m)
     return m
 
 
