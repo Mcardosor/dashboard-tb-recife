@@ -68,7 +68,47 @@ def _base() -> folium.Map:
     )
     m.get_root().width = "100%"
     m.get_root().height = MAP_HEIGHT
+    _inject_tile_switcher(m)
     return m
+
+
+def _inject_tile_switcher(m: folium.Map) -> None:
+    """Injeta JS que troca o tile base (positron ↔ dark_matter) ao mudar o tema."""
+    map_var = m.get_name()
+    js = f"""
+    <script>
+    (function() {{
+      var p = window.parent;
+      var LIGHT = 'https://{{s}}.basemaps.cartocdn.com/light_all/{{z}}/{{x}}/{{y}}{{r}}.png';
+      var DARK  = 'https://{{s}}.basemaps.cartocdn.com/dark_all/{{z}}/{{x}}/{{y}}{{r}}.png';
+      var ATTR  = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+
+      function switchTile(theme) {{
+        if (typeof {map_var} === 'undefined') return;
+        {map_var}.eachLayer(function(layer) {{
+          if (layer._url) {{ {map_var}.removeLayer(layer); }}
+        }});
+        L.tileLayer(theme === 'dark' ? DARK : LIGHT, {{
+          attribution: ATTR, subdomains: 'abcd', maxZoom: 19
+        }}).addTo({map_var});
+      }}
+
+      function applyTheme() {{
+        var theme = p.document.documentElement.getAttribute('data-theme') || 'light';
+        switchTile(theme);
+      }}
+
+      setTimeout(function() {{
+        applyTheme();
+        new MutationObserver(applyTheme).observe(
+          p.document.documentElement,
+          {{attributes: true, attributeFilter: ['data-theme']}}
+        );
+      }}, 400);
+    }})();
+    </script>
+    """
+    m.get_root().html.add_child(folium.Element(js))
 
 
 def mapa_calor() -> folium.Map:

@@ -245,6 +245,12 @@ _DARK_CSS = """
   [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext rect { fill: #21262d !important; stroke: #30363d !important; }
   [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext text { fill: #e6edf3 !important; }
   [data-theme="dark"] .js-plotly-plot .plotly .gridlayer path { stroke: #21262d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .zerolinelayer path { stroke: #30363d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .legend .bg { fill: rgba(22,27,34,.85) !important; stroke: #30363d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .legend text { fill: #c9d1d9 !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .g-gtitle text { fill: #f0f6fc !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .g-xtitle text,
+  [data-theme="dark"] .js-plotly-plot .plotly .g-ytitle text { fill: #8b949e !important; }
 
 [data-theme="dark"] [data-testid="stButton"] button     { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
   [data-theme="dark"] [data-testid="stButton"] button[kind="primary"] { background-color: #2B7BB9 !important; border-color: #2B7BB9 !important; color: #fff !important; }
