@@ -25,3 +25,6 @@ CMD ["python", "-m", "streamlit", "run", "app.py", \
      "--server.port=8501", \
      "--server.address=0.0.0.0", \
      "--server.headless=true"]
+
+# ── Comando de deploy na VM ────────────────────────────────────────────────────
+# docker run -d --name dashboard-tb-recife -p 8503:8501 #   -v /home/matheusrodrigues/dashboard-tb-recife/dados_dashboard:/app/dados_dashboard #   dashboard-tb-recife #   python -m streamlit run app.py #   --server.port=8501 --server.address=0.0.0.0 #   --server.baseUrlPath=cenarios/tbrecife --server.headless=true
