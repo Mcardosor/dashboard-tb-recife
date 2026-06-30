@@ -58,12 +58,16 @@ def por_bairro() -> pd.DataFrame:
     """)
 
 
+MAP_HEIGHT = "680px"
+
 def _base() -> folium.Map:
     m = folium.Map(
         location=list(RECIFE_CENTRO), zoom_start=12, min_zoom=11, max_zoom=16,
         tiles="CartoDB positron", control_scale=True,
         zoomControl=True, dragging=True, boxZoom=False,
     )
+    m.get_root().width = "100%"
+    m.get_root().height = MAP_HEIGHT
     return m
 
 
