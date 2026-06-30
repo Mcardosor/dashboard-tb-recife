@@ -246,6 +246,28 @@ _DARK_CSS = """
   [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext text { fill: #e6edf3 !important; }
   [data-theme="dark"] .js-plotly-plot .plotly .gridlayer path { stroke: #21262d !important; }
 
+[data-theme="dark"] [data-testid="stButton"] button     { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
+  [data-theme="dark"] [data-testid="stButton"] button[kind="primary"] { background-color: #2B7BB9 !important; border-color: #2B7BB9 !important; color: #fff !important; }
+  [data-theme="dark"] [data-testid="stDownloadButton"] button { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
+  [data-theme="dark"] [data-baseweb="select"] > div:first-child,
+  [data-theme="dark"] [data-baseweb="input"] > div { background-color: #21262d !important; border-color: #30363d !important; }
+  [data-theme="dark"] [data-baseweb="select"] input,
+  [data-theme="dark"] [data-baseweb="input"] input  { color: #e6edf3 !important; }
+  [data-theme="dark"] [data-baseweb="menu"]           { background-color: #21262d !important; border-color: #30363d !important; }
+  [data-theme="dark"] [data-baseweb="menu"] li         { color: #e6edf3 !important; }
+  [data-theme="dark"] [data-baseweb="menu"] li:hover   { background-color: #30363d !important; }
+  [data-theme="dark"] div[role="dialog"]               { background-color: #161b22 !important; border-color: #30363d !important; }
+  [data-theme="dark"] div[role="dialog"] > div         { background-color: #161b22 !important; }
+  [data-theme="dark"] .js-plotly-plot .modebar         { background: #21262d !important; border: 1px solid #30363d !important; border-radius: 6px !important; }
+  [data-theme="dark"] .js-plotly-plot .modebar-btn path { fill: #8b949e !important; }
+  [data-theme="dark"] .js-plotly-plot .modebar-btn:hover path { fill: #e6edf3 !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .legend .bg  { fill: #161b22 !important; stroke: #30363d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .legend text { fill: #e6edf3 !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .annotation-text { fill: #e6edf3 !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .zerolinelayer path { stroke: #30363d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext rect { fill: #21262d !important; stroke: #30363d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext path { fill: #21262d !important; }
+  [data-theme="dark"] .js-plotly-plot .plotly .hoverlayer .hovertext text { fill: #e6edf3 !important; }
   [data-theme="dark"] #_tb_theme_btn { background: rgba(22,27,34,.9) !important; border-color: #30363d !important; color: #e6edf3 !important; }
 """
 

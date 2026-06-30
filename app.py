@@ -16,7 +16,7 @@ from src.constantes import (
     COR_CURA, COR_OBITO, COR_ABANDONO, COR_HIV, COR_MASC, COR_NEUTRO,
 )
 
-st.set_page_config(page_title="Dashboard TB | Recife", page_icon="🫁", layout="wide")
+st.set_page_config(page_title="Dashboard TB | Recife", page_icon="🩺", layout="wide")
 styles.inject_css()
 styles.navbar()
 
@@ -144,7 +144,7 @@ with tab_epi:
             "**Denominador:** população IBGE de Recife no ano  \n"
             "**Cálculo:** coeficiente anual por 100 mil hab."))
         st.plotly_chart(graficos.linha_incidencia(d["inc"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c2:
         coorte_df, encerrados = d["coorte"]
         st.subheader("Desfecho dos casos encerrados", help=(
@@ -153,7 +153,7 @@ with tab_epi:
             "**Exclui:** em acompanhamento e transferidos  \n"
             "**Metodologia:** coorte (MS/OMS)."))
         st.plotly_chart(graficos.barras_desfecho(coorte_df),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
 
     st.divider()
     c3, c4 = st.columns(2)
@@ -164,13 +164,13 @@ with tab_epi:
             "**Retratamento:** Recidiva + Reingresso após abandono  \n"
             "*Mantidos separados: têm dinâmicas e taxas de cura distintas.*"))
         st.plotly_chart(graficos.barras_novos_retratamento(d["tipo_entrada"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c4:
         st.subheader("Sazonalidade — média de casos por mês", help=(
             "**Fonte:** SINAN-TB (data de notificação)  \n"
             "**Cálculo:** total de cada mês ÷ nº de anos (2010–2023)."))
         st.plotly_chart(graficos.barras_sazonalidade(d["sazonalidade"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
 
     st.divider()
     c5, c6 = st.columns(2)
@@ -181,14 +181,14 @@ with tab_epi:
             "**Denominador:** casos encerrados no ano  \n"
             "**Meta OMS:** < 5% — acima disso indica risco de TB resistente."))
         st.plotly_chart(graficos.linha_abandono(d["abandono_ano"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c6:
         st.subheader("Casos por faixa etária ao longo dos anos", help=(
             "**Fonte:** SINAN-TB (nu_idade_n)  \n"
             "**Nota:** mostra distribuição absoluta — sem denominador por faixa etária.  \n"
             "O aumento recente em 15–34 anos reflete a epidemia concentrada em adultos jovens."))
         st.plotly_chart(graficos.barras_faixa_por_ano(d["faixa_ano"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
 
     st.divider()
     op = d["oportunidade"]
@@ -218,7 +218,7 @@ with tab_perfil:
             "**Fonte:** SINAN-TB (cs_sexo)  \n"
             "**Exclui:** sexo ignorado para não distorcer a proporção."))
         st.plotly_chart(graficos.barras_sexo_ano(d["sexo"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c2:
         st.subheader("Distribuição por raça/cor", help=(
             "**Fonte:** SINAN-TB (cs_raca)  \n"
@@ -226,7 +226,7 @@ with tab_perfil:
         st.plotly_chart(
             graficos.barras_h_pct(d["raca"], col_label="raca", col_pct="pct", col_n="casos",
                                   cor_unica=COR_MASC),
-            use_container_width=True, config=PLOTLY_CFG,
+            width="stretch", config=PLOTLY_CFG,
         )
 
     c3, c4 = st.columns(2)
@@ -235,7 +235,7 @@ with tab_perfil:
             "**Fonte:** SINAN-TB (nu_idade_n · código SINAN 4XXX = anos)  \n"
             "**Grupos:** padrão MS/OMS para TB."))
         st.plotly_chart(graficos.barras_faixa_etaria(d["faixa"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c4:
         st.subheader("Populações vulneráveis", help=(
             "**Fonte:** SINAN-TB (pop_liber, pop_rua, pop_imig, pop_saude, benef_gov)  \n"
@@ -244,7 +244,7 @@ with tab_perfil:
         st.plotly_chart(
             graficos.barras_h_pct(d["vulneravel"], col_label="populacao",
                                   col_pct="pct", col_n="casos", cor_unica=COR_ABANDONO),
-            use_container_width=True, config=PLOTLY_CFG,
+            width="stretch", config=PLOTLY_CFG,
         )
 
     _mapa_cores_agravos = {
@@ -262,7 +262,7 @@ with tab_perfil:
             d["agravos"], col_label="agravo", col_pct="pct", col_n="casos",
             altura=260, cores=_cores_agravos_lista,
         ),
-        use_container_width=True, config=PLOTLY_CFG,
+        width="stretch", config=PLOTLY_CFG,
     )
 
     st.divider()
@@ -274,14 +274,14 @@ with tab_perfil:
             "**Fonte:** SINAN-TB (forma)  \n"
             "**Denominador:** casos com forma informada."))
         st.plotly_chart(graficos.pizza_forma(d["forma"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c6:
         st.subheader("Coinfecção HIV — cobertura e positividade por ano", help=(
             "**Fonte:** SINAN-TB (hiv)  \n"
             "**Positividade:** HIV+ ÷ testados (Positivo + Negativo).  \n"
             "**Cobertura:** testados ÷ total de casos notificados."))
         st.plotly_chart(graficos.linhas_hiv(d["hiv_ano"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
 
     c7, c8 = st.columns(2)
     with c7:
@@ -290,7 +290,7 @@ with tab_perfil:
             "**Denominador:** casos encerrados (exclui transferidos e em acompanhamento).  \n"
             "**Meta OMS:** ≥ 85% de cura."))
         st.plotly_chart(graficos.linhas_cura_tipo(d["coorte_tipo_ano"]),
-                        use_container_width=True, config=PLOTLY_CFG)
+                        width="stretch", config=PLOTLY_CFG)
     with c8:
         coorte_novo_df, total_novo = d["coorte_novo"]
         coorte_retrat_df, total_retrat = d["coorte_retrat"]
@@ -302,12 +302,12 @@ with tab_perfil:
             st.subheader("Desfechos — casos novos", help=(
                 "**Fonte:** SINAN-TB · **Denominador:** casos novos encerrados."))
             st.plotly_chart(graficos.barras_desfecho(coorte_novo_df),
-                            use_container_width=True, config=PLOTLY_CFG)
+                            width="stretch", config=PLOTLY_CFG)
         with subtab_retrat:
             st.subheader("Desfechos — retratamento", help=(
                 "**Fonte:** SINAN-TB · **Denominador:** retratamentos encerrados."))
             st.plotly_chart(graficos.barras_desfecho(coorte_retrat_df),
-                            use_container_width=True, config=PLOTLY_CFG)
+                            width="stretch", config=PLOTLY_CFG)
 
 
 # ── Mapa ──────────────────────────────────────────────────────────────────────
@@ -332,7 +332,7 @@ with tab_geo:
     with col_rank:
         df_rank = mapa.por_bairro().head(15)
         fig_rank = graficos.barras_bairros(df_rank)
-        st.plotly_chart(fig_rank, use_container_width=True, config=PLOTLY_CFG)
+        st.plotly_chart(fig_rank, width="stretch", config=PLOTLY_CFG)
 
 
 # ── Análise Livre (PyGWalker) ─────────────────────────────────────────────────
