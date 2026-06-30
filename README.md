@@ -2,7 +2,7 @@
 
 Painel de vigilância epidemiológica da tuberculose no município de Recife (PE). Dados do SINAN vinculados ao SIM, geocodificados por bairro e Distrito Sanitário.
 
-Acesso: http://164.41.147.175:8503/cenarios/tbrecife
+Acesso (requer VPN): http://164.41.147.175:8503/cenarios/tbrecife
 
 ## Conteúdo
 
