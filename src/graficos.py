@@ -268,7 +268,7 @@ def barras_sazonalidade(df, titulo=None, altura=H_MEDIUM):
     return aplicar_layout(fig, altura=altura, titulo=titulo)
 
 
-def barras_bairros(df, titulo="Top 15 Bairros — Casos de TB", altura=580):
+def barras_bairros(df, titulo="Top 15 Bairros — Casos de TB", altura=680):
     """Ranking horizontal dos bairros com mais casos."""
     df = df.sort_values("casos", ascending=True)
     fig = go.Figure(

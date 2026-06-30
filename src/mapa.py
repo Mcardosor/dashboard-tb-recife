@@ -61,7 +61,7 @@ def por_bairro() -> pd.DataFrame:
 def _base() -> folium.Map:
     m = folium.Map(
         location=list(RECIFE_CENTRO), zoom_start=12, min_zoom=11, max_zoom=16,
-        tiles="CartoDB dark_matter", control_scale=True,
+        tiles="CartoDB positron", control_scale=True,
         zoomControl=True, dragging=True, boxZoom=False,
     )
     return m
@@ -117,7 +117,7 @@ def choropleth_bairro() -> folium.Map:
 
     def style(feat):
         v = casos.get(feat["properties"]["_nome"], 0)
-        return {"fillColor": escala(v), "color": "#30363d", "weight": 0.6,
+        return {"fillColor": escala(v), "color": "#b0b8c2", "weight": 0.6,
                 "fillOpacity": 0.78 if v else 0.15}
 
     for f in g["features"]:
@@ -129,7 +129,7 @@ def choropleth_bairro() -> folium.Map:
         tooltip=folium.GeoJsonTooltip(
             fields=["EBAIRRNOMEOF", "_casos"], aliases=["Bairro:", "Casos:"],
             localize=True, sticky=False,
-            style="background:#161b22;color:#f0f6fc;border:1px solid #30363d;border-radius:6px;padding:6px;",
+            style="background:#ffffff;color:#1a3a5c;border:1px solid #d0d7de;border-radius:6px;padding:6px;font-weight:500;",
         ),
     ).add_to(m)
     escala.add_to(m)

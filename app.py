@@ -327,7 +327,7 @@ with tab_geo:
     # ── Layout 2 colunas: mapa | ranking
     col_map, col_rank = st.columns([3, 2])
     with col_map:
-        components.html(mapa_html(_modo_ativo), height=580)
+        components.html(mapa_html(_modo_ativo), height=680)
         st.caption("Fonte: SINAN-TB geocodificado · 2010–2023 · contornos: Prefeitura do Recife.")
     with col_rank:
         df_rank = mapa.por_bairro().head(15)
