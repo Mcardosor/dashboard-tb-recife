@@ -149,29 +149,39 @@ def barras_faixa_etaria(df, titulo=None, altura=H_MEDIUM):
 
 
 def pizza_forma(df, titulo=None, altura=H_MEDIUM):
-    """Gráfico de rosca para forma clínica."""
+    """Barra horizontal para forma clínica (substitui rosca — poucas categorias
+    comparam-se melhor lado a lado do que em fatias de pizza; padrão consistente
+    com barras_h_pct usado nos demais gráficos categóricos do dashboard)."""
+    df = df.copy()
+    total = df["casos"].sum()
+    df["pct"] = (df["casos"] / total * 100) if total else 0
+    df = df.sort_values("pct")
     cores_forma = tb_color_map(df["forma"].tolist())
     fig = go.Figure(
-        go.Pie(
-            labels=df["forma"], values=df["casos"],
-            hole=0.45,
-            marker=dict(colors=[cores_forma[f] for f in df["forma"]],
-                        line=dict(color="#0d1117", width=2)),
-            textinfo="percent+label",
-            textfont=dict(size=11, color="#c9d1d9"),
-            hovertemplate="<b>%{label}</b><br>%{value:,.0f} casos (%{percent})<extra></extra>",
+        go.Bar(
+            x=df["pct"], y=df["forma"], orientation="h",
+            marker=dict(color=[cores_forma[f] for f in df["forma"]], line=dict(width=0)),
+            text=[f"{p:.1f}%" for p in df["pct"]],
+            textposition="outside", cliponaxis=False,
+            customdata=df["casos"],
+            hovertemplate="<b>%{y}</b><br>%{customdata:,.0f} casos (%{text})<extra></extra>",
         )
     )
+    fig.update_xaxes(title="%", range=[0, df["pct"].max() * 1.18])
+    fig.update_yaxes(title=None)
     return aplicar_layout(fig, altura=altura, titulo=titulo)
 
 
 def linhas_hiv(df, titulo=None, altura=H_MEDIUM):
-    """Cobertura de testagem e positividade HIV por ano (dois eixos)."""
+    """Cobertura de testagem e positividade HIV por ano.
+    Eixo Y único de 0-100%: ambas as séries são percentuais e usar duas escalas
+    diferentes (como no eixo duplo anterior) distorce a comparação visual entre
+    cobertura de testagem e positividade."""
     fig = go.Figure()
     fig.add_scatter(
         x=df["ano"], y=df["cobertura"], name="Cobertura testagem (%)",
         mode="lines+markers", line=dict(color=COR_NEUTRO, width=2),
-        marker=dict(size=6), yaxis="y2",
+        marker=dict(size=6),
         hovertemplate="<b>%{x}</b><br>Cobertura: %{y:.1f}%<extra></extra>",
     )
     fig.add_scatter(
@@ -183,9 +193,7 @@ def linhas_hiv(df, titulo=None, altura=H_MEDIUM):
         hovertemplate="<b>%{x}</b><br>Positividade: %{y:.1f}%<extra></extra>",
     )
     fig.update_layout(
-        yaxis=dict(title="HIV+ (%)", range=[0, df["positividade"].max() * 1.3]),
-        yaxis2=dict(title="Cobertura (%)", overlaying="y", side="right",
-                    range=[0, 110], showgrid=False),
+        yaxis=dict(title="%", range=[0, 100]),
         legend=dict(orientation="h", y=1.15, x=0),
     )
     fig.update_xaxes(type="category", title=None)
