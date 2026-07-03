@@ -4,6 +4,12 @@ Painel de vigilância epidemiológica da tuberculose no município de Recife (PE
 
 Acesso: https://telessaude.unb.br/cenarios/tbrecife
 
+## Documentação
+
+| Documento | Descrição |
+|---|---|
+| [Documentação dos Gráficos](docs/DOCUMENTACAO_GRAFICOS.md) | Por que cada gráfico existe, como é calculado e o código |
+
 ## Conteúdo
 
 - KPIs: incidência, taxa de cura, abandono, coinfecção HIV, óbitos por TB
