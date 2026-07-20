@@ -8,6 +8,7 @@ Acesso: https://telessaude.unb.br/cenarios/tbrecife
 
 | Documento | Descrição |
 |---|---|
+| [Arquitetura](docs/ARQUITETURA.md) | Fluxo de dados ponta a ponta, módulos, deploy e limitações — comece por aqui |
 | [Documentação dos Gráficos](docs/DOCUMENTACAO_GRAFICOS.md) | Por que cada gráfico existe, como é calculado e o código |
 
 ## Conteúdo
@@ -50,12 +51,17 @@ dashboard-tb-recife/
 ├── requirements.txt
 ├── src/
 │   ├── styles.py                 # CSS e toggle dark/light
-│   ├── sidebar.py                # filtros e navegação
-│   ├── dados.py                  # carregamento e cache (DuckDB)
+│   ├── banco.py                  # engine DuckDB sobre o Parquet local
+│   ├── indicadores.py            # cálculos epidemiológicos
+│   ├── constantes.py             # caminhos, colunas usadas, paletas
 │   ├── graficos.py               # visualizações Plotly
 │   └── mapa.py                   # mapa Folium por bairro
 └── dados_dashboard/
-    └── tb_recife_tratado.parquet
+    ├── recife_tb_geolink.parquet     # base principal (SINAN x SIM, geocodificada)
+    ├── recife_tb_sinan.parquet
+    ├── obitos_sim_recife.parquet
+    ├── pop_recife.parquet
+    └── bairros_recife.geojson
 ```
 
 Fonte: SINAN NET + SIM (Secretaria de Saúde do Recife / Ministério da Saúde). Cobertura: Recife (PE), 2010–2023. Última atualização: junho/2026.
