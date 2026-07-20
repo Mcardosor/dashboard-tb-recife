@@ -51,7 +51,7 @@ Nenhuma variável de ambiente é necessária pra rodar o app — os dados já v�
 
 - **Imagem:** `docker-compose.yml` builda a partir do `Dockerfile`, com `dados_dashboard/` bind-mounted (`:ro`) por cima — trocar os Parquet no host reflete sem rebuild.
 - **Container:** `dashboard-tb-recife`, porta **8503**.
-- **Produção (VM):** `/home/matheusrodrigues/dashboard-tb-recife/`, exposto via nginx em `https://telessaude.unb.br/cenarios/tbrecife` (proxy_pass pra `localhost:8503`).
+- **Produção (VM):** `/home/matheusrodrigues/dashboard-tb-recife/`, exposto via nginx em `https://painel.cenarios.unb.br/cenarios/tbrecife` (proxy_pass pra `localhost:8503`).
 
 ## Limitações conhecidas
 
