@@ -16,7 +16,7 @@ from src.constantes import (
     COR_CURA, COR_OBITO, COR_ABANDONO, COR_HIV, COR_MASC, COR_NEUTRO,
 )
 
-st.set_page_config(page_title="Dashboard TB | Recife", page_icon="🩺", layout="wide")
+st.set_page_config(page_title="Dashboard TB | Recife", page_icon="🩺", layout="wide", initial_sidebar_state="collapsed")
 styles.inject_css()
 styles.navbar()
 
