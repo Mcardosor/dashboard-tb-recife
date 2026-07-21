@@ -24,6 +24,15 @@ _CSS = """
   [data-testid="stButton"] button[kind="primary"]:hover {
     background-color: #1a5c8a !important; border-color: #1a5c8a !important;
   }
+  /* Botao secundario (nao selecionado) — o tema nativo do Streamlit e "dark"
+     (config.toml), entao sem essa regra ele fica sempre escuro, mesmo no
+     modo claro do toggle custom. */
+  [data-testid="stButton"] button[kind="secondary"] {
+    background-color: #ffffff !important; border-color: #d0d7de !important; color: #24292f !important;
+  }
+  [data-testid="stButton"] button[kind="secondary"]:hover {
+    background-color: #f6f8fa !important; border-color: #2B7BB9 !important; color: #2B7BB9 !important;
+  }
 
   [data-testid="stPills"] button {
     background-color: transparent !important; border: 1px solid #d0d7de !important;
@@ -226,6 +235,8 @@ _DARK_CSS = """
 
   [data-theme="dark"] [data-testid="stButton"] button     { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
   [data-theme="dark"] [data-testid="stButton"] button[kind="primary"] { background-color: #2B7BB9 !important; border-color: #2B7BB9 !important; color: #fff !important; }
+  [data-theme="dark"] [data-testid="stButton"] button[kind="secondary"] { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
+  [data-theme="dark"] [data-testid="stButton"] button[kind="secondary"]:hover { background-color: #30363d !important; border-color: #58a6ff !important; color: #58a6ff !important; }
 
   [data-theme="dark"] [data-baseweb="select"] > div:first-child,
   [data-theme="dark"] [data-baseweb="input"] > div { background-color: #21262d !important; border-color: #30363d !important; }
@@ -254,6 +265,8 @@ _DARK_CSS = """
 
 [data-theme="dark"] [data-testid="stButton"] button     { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
   [data-theme="dark"] [data-testid="stButton"] button[kind="primary"] { background-color: #2B7BB9 !important; border-color: #2B7BB9 !important; color: #fff !important; }
+  [data-theme="dark"] [data-testid="stButton"] button[kind="secondary"] { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
+  [data-theme="dark"] [data-testid="stButton"] button[kind="secondary"]:hover { background-color: #30363d !important; border-color: #58a6ff !important; color: #58a6ff !important; }
   [data-theme="dark"] [data-testid="stDownloadButton"] button { background-color: #21262d !important; border-color: #30363d !important; color: #e6edf3 !important; }
   [data-theme="dark"] [data-baseweb="select"] > div:first-child,
   [data-theme="dark"] [data-baseweb="input"] > div { background-color: #21262d !important; border-color: #30363d !important; }
