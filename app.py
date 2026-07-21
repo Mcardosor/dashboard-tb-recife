@@ -335,24 +335,39 @@ with tab_geo:
         st.plotly_chart(fig_rank, width="stretch", config=PLOTLY_CFG)
 
 
-# ── Análise Livre (PyGWalker) ─────────────────────────────────────────────────
+# ── Análise Livre (Apache Superset embutido via iframe) ───────────────────────
+# Mesmo padrão do TB SINAN nacional (app.py::secao_analise_livre). Caminho
+# relativo porque o Superset roda no MESMO domínio deste dashboard, resolvendo
+# cookie (mesmo site) e HTTPS (herdado do domínio pai) sem configuração extra.
+#
+# PENDENTE (precisa da VM): a base do Recife (recife_tb_geolink.parquet) ainda
+# NÃO está conectada como dataset no Superset — só a base nacional (id=1)
+# está. Passos que faltam, todos na VM:
+#   1. Conectar recife_tb_geolink.parquet como novo dataset no Superset
+#   2. Anotar o datasource_id gerado e substituir o placeholder abaixo
+#   3. Confirmar que a rota /cenarios/tbrecife também expõe /cenarios/superset/
+#      (mesmo nginx da instalação nacional, deve funcionar sem mudança)
+_SUPERSET_EXPLORE_URL = (
+    "/cenarios/superset/explore/"
+    "?datasource_type=table&datasource_id=PENDENTE_CONECTAR_DATASET_RECIFE"
+)
+
 with tab_livre:
-    st.markdown(
-        "Exploração livre dos microdados SINAN-TB de Recife · 2010–2023.  \n"
-        "Arraste campos para o eixo X/Y, use **Cor** e **Filtro** para segmentar.  \n"
-        "Colunas decodificadas disponíveis: `tipo_entrada`, `desfecho`, `resultado_hiv`, "
-        "`sexo`, `raca_cor`, `forma_clinica`, `ano`."
+    st.subheader("🔬 Análise Livre")
+    st.caption(
+        "Monte seus próprios gráficos arrastando campos para os eixos — sem "
+        "precisar de código. Ferramenta: Apache Superset."
     )
-    try:
-        from pygwalker.api.streamlit import StreamlitRenderer
-
-        @st.cache_resource
-        def _pygwalker():
-            df_dec = indicadores.df_para_analise()
-            return StreamlitRenderer(df_dec, appearance="light")
-
-        _pygwalker().explorer()
-    except Exception as e:
-        st.error(f"PyGWalker indisponível: {e}")
+    st.info(
+        "📊 Esta aba roda dentro do **Apache Superset**, uma ferramenta separada "
+        "de BI self-service — processa no servidor, sem limite de linhas. É "
+        "necessário ter uma conta no Superset (peça acesso caso ainda não tenha)."
+    )
+    st.markdown(
+        f'<iframe src="{_SUPERSET_EXPLORE_URL}" width="100%" height="1000" '
+        f'style="border: 1px solid #30363d; border-radius: 8px;" '
+        f'allowfullscreen></iframe>',
+        unsafe_allow_html=True,
+    )
 
 styles.footer()

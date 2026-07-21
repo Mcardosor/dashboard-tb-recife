@@ -1,4 +1,6 @@
 # Dashboard TB Recife — dependências de produção (imagem Docker)
+# (sem pygwalker: Análise Livre é o Apache Superset embutido via iframe, ver
+# app.py e docs do dashboard-tb-v4)
 streamlit==1.35.0
 pandas>=2.2,<3.0
 pyarrow>=14.0
@@ -6,7 +8,6 @@ duckdb>=0.10
 plotly>=5.20
 folium>=0.19
 streamlit-folium>=0.2
-pygwalker==0.5.0.1
 tornado>=6.4
 requests>=2.31
 python-dotenv>=1.0
