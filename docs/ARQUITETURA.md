@@ -58,5 +58,19 @@ Nenhuma variável de ambiente é necessária pra rodar o app — os dados já v�
 - Pipeline de exportação (Postgres → Parquet) não está neste repositório (ver seção Fluxo de dados).
 - Cobertura: 2010–2023, só o município de Recife (PE); 99 bairros, 8 Distritos Sanitários, 2.447 setores censitários.
 - Vinculação SINAN-SIM tem ~2.340 registros com link de óbito; nem todo caso tem desfecho de óbito vinculado.
-- PyGWalker ainda está nas dependências (`requirements.txt`), mas o TB nacional já migrou pro Apache Superset — avaliar se vale a mesma migração aqui.
-- Sem testes automatizados.
+- **A aba Análise Livre não funciona ainda.** A migração de PyGWalker para
+  Apache Superset foi feita no código, mas o iframe aponta para um
+  `datasource_id` que é literalmente o texto `PENDENTE_CONECTAR_DATASET_RECIFE`.
+  Faltam três passos, todos na VM (ver comentário em `app.py`, seção Análise
+  Livre): conectar `recife_tb_geolink.parquet` como dataset no Superset,
+  substituir o placeholder pelo id gerado, e confirmar que a rota
+  `/cenarios/tbrecife` também expõe `/cenarios/superset/`. Até lá a aba carrega
+  um iframe que o Superset rejeita.
+- `df_para_analise()` (`src/indicadores.py`) e `banco.query_all_cols()` ficaram
+  órfãos com a saída do PyGWalker — nada mais os chama. Não atrapalham, mas são
+  código morto esperando remoção.
+- O painel **não tem download em CSV**, apesar de versões antigas desta
+  documentação mencionarem um.
+- Sem testes automatizados. O painel de PE (`Tuberculose_Pernambuco`) e o TB
+  nacional (`tuberculose-sinan`) já têm suítes de invariante epidemiológico;
+  trazer a mesma abordagem para cá é o maior ganho disponível neste repositório.

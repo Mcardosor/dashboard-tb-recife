@@ -38,7 +38,7 @@
   - [Mapa de calor (heatmap)](#mapa-de-calor-heatmap)
   - [Ranking: Top 15 bairros com mais casos](#ranking-top-15-bairros-com-mais-casos)
 - **Aba Análise Livre**
-  - [Exploração com PyGWalker](#exploração-com-pygwalker)
+  - [Exploração com Apache Superset](#exploração-com-apache-superset)
 
 ---
 
@@ -63,7 +63,7 @@ Motor de consulta: DuckDB (SQL direto sobre os arquivos, sem banco persistente)
 Interface: Streamlit (Python)
 Gráficos interativos: Plotly
 Mapas: Folium (renderizado como HTML estático com cache Streamlit)
-Análise livre: PyGWalker (drag-and-drop sobre os microdados)
+Análise livre: Apache Superset embutido via iframe (processa no servidor, fora deste app)
 ```
 
 Os arquivos Parquet ficam em `dados_dashboard/`. O `banco.py` abre conexões DuckDB sob demanda (sem servidor), executa a query e retorna um `pandas.DataFrame`. O app carrega tudo uma vez em `carregar()` (decorado com `@st.cache_data`, TTL 1 hora) e distribui os DataFrames para cada função de gráfico.
@@ -885,34 +885,69 @@ def barras_bairros(df, titulo="Top 15 Bairros — Casos de TB", altura=680):
 
 ---
 
-## Exploração com PyGWalker
+## Exploração com Apache Superset
 
-**O que mostra:** interface de exploração visual drag-and-drop sobre os microdados do SINAN-TB de Recife (2010–2023), com colunas decodificadas para linguagem legível.
+> **Estado atual: a aba não funciona.** O código já é o do Superset, mas o
+> `datasource_id` do iframe é o texto literal
+> `PENDENTE_CONECTAR_DATASET_RECIFE`. Até que o dataset de Recife seja
+> conectado na VM, a aba carrega um iframe que o Superset rejeita. Os passos
+> que faltam estão listados abaixo.
 
-**Por que existe:** permite análises ad hoc sem programação — o usuário arrasta campos para os eixos X/Y, aplica filtros e muda o tipo de gráfico diretamente na interface. Serve para hipóteses não previstas nos gráficos fixos do painel.
+**O que mostra:** um Apache Superset embutido via iframe, para montar gráficos
+arrastando campos — sem programar e sem os gráficos fixos do painel.
 
-**Colunas decodificadas disponíveis:** `tipo_entrada`, `desfecho`, `resultado_hiv`, `sexo`, `raca_cor`, `forma_clinica`, `ano`.
+**Por que existe:** permite análises ad hoc sobre hipóteses não previstas.
+Mesmo papel do PyGWalker que ele substituiu, com uma diferença que motivou a
+troca: **o Superset processa no servidor**. O PyGWalker embutia os dados
+inteiros como HTML/JSON no navegador — 116 mil linhas geravam ~227 MB de HTML,
+e a aba travava. O Superset não tem esse teto porque nada do microdado trafega
+para o navegador.
 
-**Como é calculado:** a função `df_para_analise()` carrega todos os registros da tabela principal e substitui os códigos crus do SINAN por rótulos descritivos, usando os dicionários de `constantes.py`. O resultado é entregue ao `StreamlitRenderer` do PyGWalker.
+**Como funciona:** não há função de agregação neste repositório para esta aba.
+O `app.py` monta um `<iframe>` apontando para `/cenarios/superset/explore/`, em
+caminho **relativo** — o Superset roda no mesmo domínio do painel, o que
+resolve cookie (mesmo site) e HTTPS (herdado do domínio pai) sem configuração
+extra. O Superset consulta os dados por conta própria; os filtros da sidebar
+deste app não o afetam.
+
+**Acesso:** é preciso ter conta no Superset. No TB nacional o auto-cadastro
+está habilitado (role Gamma, leitura/exploração).
 
 <details>
-<summary>▶ Ver código (src/indicadores.py → df_para_analise)</summary>
+<summary>▶ Ver código (app.py → aba Análise Livre)</summary>
 
 ~~~python
-def df_para_analise() -> pd.DataFrame:
-    df = banco.query_all_cols("SELECT * FROM tb")
-    df["tipo_entrada"]  = df["tratamento"].astype(str).map(TIPO_ENTRADA)
-    df["desfecho"]      = df["situa_ence"].apply(
-        lambda x: SITUACAO_ENCERRAMENTO.get(str(int(float(x))), None) if pd.notna(x) else None
+_SUPERSET_EXPLORE_URL = (
+    "/cenarios/superset/explore/"
+    "?datasource_type=table&datasource_id=PENDENTE_CONECTAR_DATASET_RECIFE"
+)
+
+with tab_livre:
+    st.subheader("🔬 Análise Livre")
+    st.markdown(
+        f'<iframe src="{_SUPERSET_EXPLORE_URL}" width="100%" height="1000" '
+        f'style="border: 1px solid #30363d; border-radius: 8px;" '
+        f'allowfullscreen></iframe>',
+        unsafe_allow_html=True,
     )
-    df["resultado_hiv"] = df["hiv"].astype(str).map(HIV_MAP)
-    df["sexo"]          = df["cs_sexo"].map(SEXO_MAP)
-    df["raca_cor"]      = df["cs_raca"].astype(str).map(RACA_MAP)
-    df["forma_clinica"] = df["forma"].astype(str).map(FORMA_MAP)
-    df["ano"]           = pd.to_numeric(df["nu_ano"], errors="coerce").astype("Int64")
-    return df
 ~~~
 </details>
+
+### O que falta para a aba funcionar
+
+Três passos, todos na VM:
+
+1. Conectar `recife_tb_geolink.parquet` como dataset no Superset
+2. Anotar o `datasource_id` gerado e substituir o placeholder em `app.py`
+3. Confirmar que a rota `/cenarios/tbrecife` também expõe `/cenarios/superset/`
+   (mesmo nginx da instalação nacional — deve funcionar sem mudança)
+
+### Código morto deixado pela migração
+
+`df_para_analise()` (`src/indicadores.py`) decodificava os códigos do SINAN
+para rótulos legíveis e entregava o DataFrame ao PyGWalker. Com a saída do
+PyGWalker, nada mais a chama — nem ela nem `banco.query_all_cols()`, que só ela
+usava. Continuam no código e podem ser removidas.
 
 ---
 

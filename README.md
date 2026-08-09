@@ -17,7 +17,7 @@ Acesso: https://painel.cenarios.unb.br/cenarios/tbrecife
 - Epidemiologia: incidência anual por 100 mil hab., sazonalidade, casos novos vs. retratamento
 - Perfil & clínico: sexo, raça/cor, forma clínica, desfecho por HIV
 - Mapa: distribuição por bairro e Distrito Sanitário
-- Análise livre: Apache Superset embutido via iframe e download em CSV
+- Análise livre: Apache Superset embutido via iframe — **ainda não operante**, falta conectar o dataset de Recife (ver Limitações em [Arquitetura](docs/ARQUITETURA.md))
 
 ## Notas técnicas
 
