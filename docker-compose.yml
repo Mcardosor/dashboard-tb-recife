@@ -10,7 +10,7 @@ services:
     environment:
       - STREAMLIT_SERVER_BASE_URL_PATH=cenarios/tbrecife
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8501/tbrecife/_stcore/health"]
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/cenarios/tbrecife/_stcore/health')"]
       interval: 30s
       timeout: 10s
       retries: 3
