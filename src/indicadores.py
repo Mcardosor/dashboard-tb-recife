@@ -16,7 +16,7 @@ import pandas as pd
 from src import banco
 from src.constantes import (
     POP_PARQUET, OBITOS_PARQUET, CODIGOS_CASO_NOVO, CODIGOS_RETRATAMENTO,
-    SITUACOES_ENCERRADAS, SITUACAO_ENCERRAMENTO, HIV_TESTADOS, CID_TB_OBITO_PREFIXOS,
+    SITUACOES_ENCERRADAS, SITUACAO_ENCERRAMENTO, HIV_TESTADOS,
 )
 
 
@@ -280,7 +280,7 @@ def agravos() -> pd.DataFrame:
 def forma_clinica() -> pd.DataFrame:
     """Distribuição por forma clínica (casos novos e todos)."""
     from src.constantes import FORMA_MAP
-    df = banco.query(f"""
+    df = banco.query("""
         SELECT forma AS cod, COUNT(*) AS casos
         FROM tb WHERE forma IS NOT NULL AND forma IN ('1','2','3')
         GROUP BY 1 ORDER BY 2 DESC

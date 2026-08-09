@@ -1,0 +1,44 @@
+name: CI
+
+# Este painel não tem suíte de testes, então o CI cobre o que dá para verificar
+# sem ela: o código passa no linter, a imagem constrói, e o que ela instala é
+# exatamente o que está no lock.
+#
+# O que NÃO é coberto: se um número do painel está certo. Isso continua
+# dependendo de olhar o painel — ver a ressalva no README.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 3.11 porque é a da imagem de produção (python:3.11-slim).
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - run: pip install ruff==0.16.2
+      - run: ruff check .
+
+  imagem:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Constrói a imagem
+        run: docker build -t tbrecife:ci .
+
+      # O `tr -d '\r'` não é supérfluo: quem commita do Windows pode gravar o
+      # lock com CRLF, e aí o diff acusa todas as linhas como diferentes.
+      - name: Confere que a imagem tem as versões do lock
+        run: |
+          docker run --rm --entrypoint pip tbrecife:ci freeze | tr -d '\r' | sort -f > /tmp/imagem.txt
+          grep -v '^#' requirements.lock.txt | grep -v '^$' | tr -d '\r' | sort -f > /tmp/lock.txt
+          diff /tmp/lock.txt /tmp/imagem.txt

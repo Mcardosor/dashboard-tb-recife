@@ -1,0 +1,68 @@
+# Lock de produção — versões exatas.
+#
+# ATENÇÃO: diferente dos outros painéis da família, este lock NÃO é uma
+# fotografia do container em execução. A VM ainda roda a versão com
+# PyGWalker; o código deste commit já é a versão Superset. O lock segue o
+# código.
+#
+# Como foi montado, em duas etapas, para minimizar a mudança:
+#   1. resolveu-se o requirements.txt pós-Superset em python:3.11-slim,
+#      obtendo a LISTA de 48 pacotes (contra 89 de antes);
+#   2. para cada pacote sobrevivente usou-se a VERSÃO que a VM já roda.
+#
+# Resultado: o próximo deploy remove os 41 pacotes da árvore do PyGWalker
+# (ipython, jupyter-widgets, wasmtime, sqlglot, pydantic…) e não mexe em
+# mais nada — nenhuma subida de versão incidental. Resolver do zero teria
+# trazido GitPython, pytz, streamlit-folium e tornado mais novos de brinde.
+#
+# Verificado: instala limpo e `pip check` não acusa dependência quebrada.
+#
+# Regenerar: ver README, seção Dependências. Não editar à mão.
+altair==5.5.0
+attrs==26.1.0
+blinker==1.9.0
+branca==0.8.2
+cachetools==5.5.2
+certifi==2026.7.22
+charset-normalizer==3.4.9
+click==8.4.2
+duckdb==1.5.5
+folium==0.20.0
+gitdb==4.0.12
+GitPython==3.1.55
+idna==3.18
+Jinja2==3.1.6
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+markdown-it-py==4.2.0
+MarkupSafe==3.0.3
+mdurl==0.1.2
+narwhals==2.24.0
+numpy==1.26.4
+packaging==24.2
+pandas==2.3.3
+pillow==10.4.0
+plotly==6.9.0
+protobuf==4.25.9
+pyarrow==25.0.0
+pydeck==0.9.3
+Pygments==2.20.0
+python-dateutil==2.9.0.post0
+python-dotenv==1.2.2
+pytz==2026.2
+referencing==0.37.0
+requests==2.34.2
+rich==13.9.4
+rpds-py==2026.6.3
+six==1.17.0
+smmap==5.0.3
+streamlit==1.35.0
+streamlit-folium==0.27.3
+tenacity==8.5.0
+toml==0.10.2
+tornado==6.5.7
+typing_extensions==4.16.0
+tzdata==2026.3
+urllib3==2.7.0
+watchdog==6.0.0
+xyzservices==2026.3.0

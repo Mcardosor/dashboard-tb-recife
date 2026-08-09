@@ -1,0 +1,34 @@
+# Ruff — só as regras que pegam bug. Estilo fica por conta de quem escreve.
+# Mesma config dos outros painéis da família Cenários+.
+
+target-version = "py311"
+
+[lint]
+select = [
+    "E4",  # imports mal colocados
+    "E7",  # comparações e nomes problemáticos
+    "E9",  # erro de sintaxe / falha de parse
+    "F",   # pyflakes: nome indefinido, import não usado, f-string sem campo
+    "B",   # flake8-bugbear: armadilhas reais de runtime
+]
+
+ignore = [
+    # B905 (`zip()` sem `strict=`) — desligada em toda a família. Aqui as duas
+    # ocorrências têm tamanhos iguais: `zip(faixas, cores_f)` são 5 e 5, e
+    # `zip(cols, cards)` vem de `st.columns(len(cards))`. Em outros painéis da
+    # família o zip é intencionalmente desigual (coluna espaçadora), então
+    # `strict=True` não é um padrão que dê para adotar de forma uniforme.
+    "B905",
+
+    # E731 (lambda atribuída a nome) — `fmt` em app.py e `pct` em
+    # indicadores.py são helpers de uma linha, usados logo abaixo. Trocar por
+    # `def` melhora traceback, mas não previne bug nenhum: fica a critério de
+    # quem mexer no arquivo, não como falha de CI.
+    "E731",
+]
+
+# E501 (linha longa) não entra: styles.py tem CSS e indicadores.py tem SQL que
+# passam de 120 colunas por natureza.
+
+# "I" (ordem de imports) também não: o isort do ruff só quebra import longo em
+# uma linha por nome, e reescreveria blocos que já estão legíveis.

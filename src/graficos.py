@@ -6,11 +6,10 @@ para garantir consistência visual (regra de estética do projeto).
 """
 
 import plotly.graph_objects as go
-import plotly.express as px
 
 from src.constantes import (
-    PLOTLY_TEMPLATE, H_MEDIUM, H_LARGE, COR_MASC, COR_FEM, COR_CURA,
-    COR_ABANDONO, COR_OBITO, COR_HIV, COR_NEUTRO, CORES, tb_color_map,
+    PLOTLY_TEMPLATE, H_MEDIUM, COR_MASC, COR_FEM, COR_CURA,
+    COR_ABANDONO, COR_HIV, COR_NEUTRO, tb_color_map,
 )
 
 _MESES = ["Jan", "Fev", "Mar", "Abr", "Mai", "Jun", "Jul", "Ago", "Set", "Out", "Nov", "Dez"]

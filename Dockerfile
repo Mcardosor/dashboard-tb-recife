@@ -7,9 +7,11 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libglib2.0-0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Copia e instala dependências Python primeiro (layer cache)
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Copia e instala dependências Python primeiro (layer cache).
+# Instala do lock (versões exatas), não do requirements.txt (faixas) — sem
+# isso, dois builds do mesmo commit podem subir versões diferentes.
+COPY requirements.lock.txt .
+RUN pip install --no-cache-dir -r requirements.lock.txt
 
 # Copia o código-fonte
 COPY app.py .

@@ -1,13 +1,28 @@
-# Dashboard TB Recife — dependências de produção (imagem Docker)
+# Dashboard TB Recife — intenção: faixas de versão que o código suporta.
 # (sem pygwalker: Análise Livre é o Apache Superset embutido via iframe, ver
 # app.py e docs do dashboard-tb-v4)
+#
+# O que é instalado de fato está em requirements.lock.txt — é de lá que o
+# Dockerfile instala. Mexa aqui só para mudar a faixa; depois regenere o lock
+# (ver README, seção Dependências).
+#
+# Antes destes tetos as faixas eram largas demais (`pyarrow>=14.0`,
+# `plotly>=5.20`, `duckdb>=0.10`) e a produção já tinha atravessado plotly
+# 5 → 6 e pyarrow 14 → 25 sem que isso fosse decidido.
+#
+# ATENÇÃO — diferente dos outros painéis da família, este lock NÃO descreve o
+# que a VM roda hoje. O container em produção ainda é a versão com PyGWalker;
+# o código aqui já é a versão Superset. O lock acompanha o código, não a VM:
+# o primeiro deploy depois disto vai instalar um conjunto bem menor (sai toda
+# a árvore do PyGWalker: ipython, jupyter-widgets, wasmtime, sqlglot…).
+# Isso é a correção, não um efeito colateral — mas é mudança real de imagem.
 streamlit==1.35.0
-pandas>=2.2,<3.0
-pyarrow>=14.0
-duckdb>=0.10
-plotly>=5.20
-folium>=0.19
-streamlit-folium>=0.2
-tornado>=6.4
-requests>=2.31
-python-dotenv>=1.0
+pandas>=2.3,<3
+pyarrow>=25,<26
+duckdb>=1.5,<2
+plotly>=6.9,<7
+folium>=0.20,<1
+streamlit-folium>=0.27,<1
+tornado>=6.5,<7
+requests>=2.34,<3
+python-dotenv>=1.2,<2
