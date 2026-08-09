@@ -66,9 +66,6 @@ Nenhuma variável de ambiente é necessária pra rodar o app — os dados já v�
   substituir o placeholder pelo id gerado, e confirmar que a rota
   `/cenarios/tbrecife` também expõe `/cenarios/superset/`. Até lá a aba carrega
   um iframe que o Superset rejeita.
-- `df_para_analise()` (`src/indicadores.py`) e `banco.query_all_cols()` ficaram
-  órfãos com a saída do PyGWalker — nada mais os chama. Não atrapalham, mas são
-  código morto esperando remoção.
 - O painel **não tem download em CSV**, apesar de versões antigas desta
   documentação mencionarem um.
 - Sem testes automatizados. O painel de PE (`Tuberculose_Pernambuco`) e o TB

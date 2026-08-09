@@ -358,22 +358,6 @@ def casos_faixa_por_ano() -> pd.DataFrame:
     return df.dropna(subset=["faixa"])
 
 
-def df_para_analise() -> "pd.DataFrame":
-    """DataFrame com colunas decodificadas para uso no PyGWalker."""
-    from src.constantes import TIPO_ENTRADA, SITUACAO_ENCERRAMENTO, HIV_MAP, SEXO_MAP, RACA_MAP, FORMA_MAP
-    df = banco.query_all_cols("SELECT * FROM tb")
-    df["tipo_entrada"]  = df["tratamento"].astype(str).map(TIPO_ENTRADA)
-    df["desfecho"]      = df["situa_ence"].apply(
-        lambda x: SITUACAO_ENCERRAMENTO.get(str(int(float(x))), None) if pd.notna(x) else None
-    )
-    df["resultado_hiv"] = df["hiv"].astype(str).map(HIV_MAP)
-    df["sexo"]          = df["cs_sexo"].map(SEXO_MAP)
-    df["raca_cor"]      = df["cs_raca"].astype(str).map(RACA_MAP)
-    df["forma_clinica"] = df["forma"].astype(str).map(FORMA_MAP)
-    df["ano"]           = pd.to_numeric(df["nu_ano"], errors="coerce").astype("Int64")
-    return df
-
-
 def kpis_gerais() -> dict:
     """KPIs consolidados para a página de Visão Geral (período completo 2010–2023)."""
     inc = serie_incidencia()

@@ -57,19 +57,6 @@ def query_geo(sql: str, params: list | None = None) -> pd.DataFrame:
         return con.execute(wrapped, params or []).df()
 
 
-def query_all_cols(sql: str, params: list | None = None) -> pd.DataFrame:
-    """Igual a query() mas com SELECT * — usado pela Análise Livre (PyGWalker)."""
-    wrapped = f"""
-        WITH tb AS (
-            SELECT * FROM read_parquet('{_parquet_posix()}')
-        )
-        {sql}
-    """
-    with duckdb.connect() as con:
-        con.execute(f"SET threads = {_threads()}")
-        return con.execute(wrapped, params or []).df()
-
-
 def anos_no_banco() -> list[int]:
     """Anos presentes no Parquet, do mais recente ao mais antigo."""
     df = query("SELECT DISTINCT nu_ano FROM tb WHERE nu_ano IS NOT NULL ORDER BY nu_ano DESC")

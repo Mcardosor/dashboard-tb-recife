@@ -942,12 +942,14 @@ Três passos, todos na VM:
 3. Confirmar que a rota `/cenarios/tbrecife` também expõe `/cenarios/superset/`
    (mesmo nginx da instalação nacional — deve funcionar sem mudança)
 
-### Código morto deixado pela migração
+### Nota histórica
 
-`df_para_analise()` (`src/indicadores.py`) decodificava os códigos do SINAN
-para rótulos legíveis e entregava o DataFrame ao PyGWalker. Com a saída do
-PyGWalker, nada mais a chama — nem ela nem `banco.query_all_cols()`, que só ela
-usava. Continuam no código e podem ser removidas.
+Até a migração, `df_para_analise()` (`src/indicadores.py`) decodificava os
+códigos do SINAN para rótulos legíveis e entregava o DataFrame ao PyGWalker,
+usando `banco.query_all_cols()` para trazer todas as colunas. Com a troca pelo
+Superset — que consulta os dados por conta própria — as duas ficaram sem
+chamador e foram removidas. Se algum dia for preciso um `SELECT *` de novo,
+`banco.query()` já faz o mesmo com projeção explícita de colunas.
 
 ---
 
